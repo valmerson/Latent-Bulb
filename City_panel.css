@@ -1,0 +1,266 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #262624;
+  color: #333;
+}
+
+#intro-container {
+  height: 100vh;
+  display: flex;
+  align-items: center; /* Centraliza o conteúdo verticalmente */
+  justify-content: center; /* Centraliza o conteúdo horizontalmente */
+  position: relative; /* Necessário para gradiente e imagem de fundo */
+  /* background: url("https://raw.githubusercontent.com/valmerson/Latent-Bulb/main/images/nuvem1.jpg"); */
+  background: url("https://raw.githubusercontent.com/valmerson/Latent-Bulb/refs/heads/main/images/oficial%20images/cover_adj.svg");
+  background-size: cover; /* Ajusta a imagem para cobrir o espaço disponível */
+  background-position: center; /* Centraliza a imagem */
+}
+
+#content {
+  text-align: center;
+  color: rgb(230, 171, 46);
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 30px 50px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+#content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+#content p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+#buttons-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+#buttons-container button {
+  font-size: 1rem;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+#explore-graph-btn {
+  background-color: #3498db;
+  color: #fff;
+}
+
+#explore-graph-btn:hover {
+  background-color: #1d6fa5;
+}
+
+#explore-content-btn {
+  background-color: #27ae60;
+  color: #fff;
+}
+
+#explore-content-btn:hover {
+  background-color: #1e8449;
+}
+
+/* Seção Narrativa */
+#main_head {
+  text-align: center;
+  background-color: #5c5c5b;
+  padding: 20px;
+  color: white;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+#narrative_path {
+  max-width: 90%;
+  margin: 20px auto;
+  /* background-color: #5c5c5b; */
+  color: whitesmoke;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#scrolling_part {
+  position: relative;
+  width: 100vw; /* Ajusta a largura para a largura da janela */
+  height: 100vh; /* Ajusta a altura para a altura da janela */
+  overflow: hidden;
+}
+
+.scroll-img {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0; /* Inicia com todas imagens invisíveis */
+  transition: opacity 0.5s ease-in-out;
+}
+
+.scroll-img.active {
+  opacity: 1;
+}
+
+#chart1 {
+  max-width: 90%;
+  max-height: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#chart2 {
+  max-width: 90%;
+  max-height: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#selector input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+#clear-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+#clear-button:hover {
+  background-color: #c0392b;
+}
+
+/* SVG Styling */
+svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Exploratory Path - Contêiner Pai */
+#exploratory_path {
+  display: flex; /* Configura layout lado a lado */
+  align-items: center; /* Alinha os elementos verticalmente */
+  justify-content: space-between; /* Distribui o espaço horizontalmente */
+  height: 100vh; /* Ocupa 100% da altura da tela */
+  gap: 1%; /* Espaçamento entre `#selector` e `#container-chart` */
+  padding: 10px; /* Espaçamento interno */
+  overflow: hidden; /* Remove barras de rolagem */
+  box-sizing: border-box; /* Inclui padding no cálculo do tamanho */
+}
+
+/* Selector - Painel de Seleção */
+#selector {
+  flex: 0 0 25%; /* O seletor ocupa 20% da largura disponível */
+  height: 90%; /* Ocupa toda a altura do contêiner pai */
+  background: #5c5c5b;
+  /* background: linear-gradient(rgba(26, 32, 44, 0.9), rgba(26, 32, 44, 0.9)); */
+  background-size: cover; /* Ajusta a imagem para cobrir todo o espaço */
+  background-position: center; /* Centraliza a imagem */
+  border-radius: 50px; /* Bordas arredondadas */
+  padding: 20px; /* Espaço interno */
+  color: white; /* Texto em branco para contraste */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra leve */
+  overflow-y: auto; /* Permite rolagem apenas se o conteúdo exceder a altura */
+}
+
+#selector input[type="text"] {
+  width: 90%; /* A barra de busca ocupa 90% da largura do elemento pai */
+  margin: 0 auto; /* Centraliza a barrinha dentro do seletor */
+  display: block; /* Garante que seja tratada como um bloco para centralização */
+  padding: 10px; /* Adiciona espaço interno para melhor usabilidade */
+  font-size: 1rem; /* Aumenta o tamanho da fonte para boa legibilidade */
+  /* background-color: #919aab; Cor de fundo escura */
+  background-color: #2d3748; /* Cor de fundo escura */
+  color: #ffffff; /* Texto branco para contraste */
+  border: none; /* Remove bordas padrões */
+  border-radius: 8px; /* Bordas arredondadas */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
+}
+
+#container-chart {
+  height: 90%; /* Ocupa 100% da altura da tela */
+  display: flex; /* Alinha os elementos internamente */
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  /* position: relative;  */
+  background: linear-gradient(
+      blue /* rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0.9) */
+    ),
+    url("https://source.unsplash.com/1600x900/?data,chart"); /* Imagem de fundo temática */
+  background-size: cover; /* Garante que a imagem cubra todo o espaço */
+  background-position: center; /* Centraliza a posição da imagem */
+  overflow: hidden; /* Remove qualquer barra de rolagem */
+  overflow: visible;
+  border-radius: 50px; /* Bordas arredondadas */
+  padding: 20px; /* Espaço interno para o gráfico */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para destaque */
+  justify-content: center;
+  align-items: center;
+}
+
+/* SVG Styling - Gráfico Responsivo */
+svg {
+  width: 100%; /* Ocupa 100% da largura disponível */
+  height: 100%; /* Ajusta-se para preencher a altura do container */
+  outline: none; /* Remove bordas padrão */
+  overflow: visible;
+  display: block; /* Remove espaços extras e alinha corretamente */
+  margin: 0 auto; /* Garante que o SVG fique centralizado horizontalmente */
+}
+
+.city-label {
+  font-size: 12px; /* Tamanho do texto */
+  font-weight: bold; /* Negrito para destaque */
+  text-anchor: end; /* Alinha o texto à direita */
+  fill: whitesmoke; /* Cor do texto */
+  transform: translate(
+    -10px,
+    -10px
+  ); /* Move 10px para a esquerda e 10px para cima */
+}
+
+@media (max-width: 768px) {
+  #exploratory_path {
+    flex-direction: column; /* Alinha os elementos verticalmente */
+    height: auto; /* Permite altura dinâmica */
+    gap: 20px; /* Espaçamento maior entre os elementos */
+  }
+
+  #selector,
+  #container-chart {
+    flex: none;
+    width: 100%; /* Ambos ocupam toda a largura */
+    height: 50vh; /* Dividem igualmente a altura disponível */
+  }
+
+  #container-chart svg {
+    height: auto; /* Ajusta dinamicamente o tamanho do gráfico */
+  }
+}

@@ -1,0 +1,702 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="City_panel.css" />
+    <title>City Panel</title>
+  </head>
+  <body>
+
+    <div id="intro-container">
+      <div id="content">
+        <h1>Bem-vindo ao Painel de Clima</h1>
+        <p>
+          Explore como as mudanças climáticas estão impactando as temperaturas
+          de bulbo úmido nas cidades da América Latina. Descubra padrões e
+          tendências ao longo do tempo!
+        </p>
+        <div id="buttons-container">
+          <button
+            id="explore-graph-btn"
+            onclick="location.href='#exploratory_path'"
+          >
+            Explorar Gráfico
+          </button>
+          <button id="explore-content-btn" onclick="location.href='#main_head'">
+            Aprender Mais
+          </button>
+        </div>
+      </div>
+      <div id="image-overlay"></div>
+    </div>
+
+
+    <div id="ground">
+      <div id="main_head">
+        <h1>A evolução da Temperatura de Bulbo Úmido na América Latina</h1>
+        <p>
+          Um painel interativo para explorar como as temperaturas de bulbo úmido
+          evoluíram em diversas cidades. Entenda os impactos do calor extremo no
+          corpo humano e nas cidades mais vulneráveis.
+        </p>
+      </div>
+
+      <div id="narrative_path">
+        <section>
+          <h2>O que é Temperatura de Bulbo Úmido?</h2>
+          <p>
+            Um índice que combina temperatura e umidade para medir o impacto do
+            calor extremo no corpo humano. Quando ultrapassa 35°C, o corpo perde
+            a capacidade de se resfriar, tornando-se fatal.
+          </p>
+        </section>
+
+        <section>
+          <h2>Por que é importante?</h2>
+          <p>
+            Este índice é essencial para identificar zonas de risco climático,
+            especialmente em áreas urbanas e costeiras, ajudando a mitigar os
+            impactos do calor extremo.
+          </p>
+        </section>
+
+        <section>
+          <h2>Principais Descobertas</h2>
+          <ul>
+            <li>
+              Incremento significativo na temperatura nas últimas décadas.
+            </li>
+            <li>
+              Maior vulnerabilidade em cidades costeiras e regiões urbanas.
+            </li>
+            <li>
+              Zonas de risco identificadas para ação imediata e planejamento
+              climático.
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Por que é importante?</h2>
+          <p>
+            Este índice é essencial para identificar zonas de risco climático,
+            especialmente em áreas urbanas e costeiras, ajudando a mitigar os
+            impactos do calor extremo.
+          </p>
+        </section>
+      </div>
+      <div id="scrolling_part"> </div>
+
+      <div id="chart1">
+        <section>
+          <h1 style="color: whitesmoke">A evolução na América Latina</h1>
+          <iframe
+            src="chart1.html"
+            style="width: 100%; height: 1000px"
+          ></iframe>
+        </section>
+      </div>
+
+      <div id="chart2">
+        <section>
+          <h1 style="color: whitesmoke">
+            A média da temperatura máxima do Bulbo Úmido na América Latina
+          </h1>
+          <iframe
+            src="chart2.html"
+            style="width: 100%; height: 1000px"
+          ></iframe>
+        </section>
+      </div>
+
+      <div id="exploratory_path">
+        <div id="selector">
+          <label for="city-search"
+            >Choose Cities:
+            <p></p>
+          </label>
+          <input
+            type="text"
+            id="city-search"
+            list="cities"
+            placeholder="Type to search..."
+            autocomplete="on"
+          />
+          <datalist id="cities"></datalist>
+          <hr />
+          <div id="checkbox-container"></div>
+          <button id="clear-button">Clear Filter</button>
+        </div>
+
+        <div id="container-chart">
+  
+          <svg
+            id="slopechart"
+            viewBox="0 0 1000 500"
+            preserveAspectRatio="xMidYMid meet"
+          ></svg>
+          <script src="https://d3js.org/d3.v7.min.js"></script>
+          <script src="dados_city_panel.js"></script>
+        </div>
+
+        <script>
+          const width = 1000;
+          const height = 500;
+          const margin = { top: 20, right: 50, bottom: 70, left: 150 };
+          const colorScale = d3.scaleOrdinal(d3.schemeTableau10);
+
+          const escala_x = d3
+            .scalePoint()
+            .domain(["1970's", "1980's", "1990's", "2000's", "2010's"])
+            .range([margin.left, width - margin.right]);
+
+          let escala_y;
+          const svg = d3.select("#slopechart");
+
+          function drawChart(data) {
+            svg.selectAll("*").remove();
+            const allValues = data.flatMap((d) => [
+              d["1970's"],
+              d["1980's"],
+              d["1990's"],
+              d["2000's"],
+              d["2010's"],
+            ]);
+            const yExtent = d3.extent(allValues);
+            escala_y = d3
+              .scaleLinear()
+              .domain([yExtent[0], yExtent[1]])
+              .range([height - margin.bottom, margin.top])
+              .nice();
+
+            const yAxis = d3
+              .axisRight(escala_y)
+              .ticks(10)
+              .tickFormat(d3.format(".1f"));
+            svg
+              .append("g")
+              .attr("class", "y-axis")
+              .attr("transform", `translate(${width - margin.right}, 0)`)
+              .call(yAxis);
+
+            escala_x.domain().forEach((decade) => {
+              svg
+                .append("line")
+                .attr("x1", escala_x(decade))
+                .attr("y1", escala_y.range()[0])
+                .attr("x2", escala_x(decade))
+                .attr("y2", escala_y.range()[1])
+                .attr("stroke", "gray")
+                .attr("stroke-width", 1)
+                .attr("stroke-opacity", 0.3);
+
+              svg
+                .append("text")
+                .attr("class", "axis-label")
+                .attr("x", escala_x(decade))
+                .attr("y", height - margin.bottom + 30)
+                .attr("text-anchor", "middle")
+                .text(decade);
+            });
+
+            data.forEach((cityData, index) => {
+              const line = svg
+                .append("path")
+                .datum(
+                  escala_x
+                    .domain()
+                    .map((decade) => [
+                      escala_x(decade),
+                      escala_y(cityData[decade]),
+                    ])
+                )
+                .attr("fill", "none")
+                .attr("stroke", colorScale(cityData.Cidade))
+                .attr("stroke-width", 2)
+                .attr(
+                  "d",
+                  d3
+                    .line()
+                    .x((d) => d[0])
+                    .y((d) => d[1])
+                );
+
+              const labelPositions = new Map();
+              const labelOffsetStep = 12;
+
+              escala_x.domain().forEach((decade, i) => {
+                svg
+                  .append("circle")
+                  .attr("cx", escala_x(decade))
+                  .attr("cy", escala_y(cityData[decade]))
+                  .attr("r", 2.5) // Reduzindo o tamanho da bolinha para metade
+                  .attr("fill", colorScale(cityData.Cidade));
+
+                if (i < escala_x.domain().length - 1) {
+                  const labelY = escala_y(cityData[decade]);
+                  const adjustedY = labelPositions.has(labelY)
+                    ? labelY + labelPositions.get(labelY) * labelOffsetStep
+                    : labelY;
+
+                  svg
+                    .append("text")
+                    .attr("x", escala_x(decade))
+                    .attr("y", adjustedY - 10)
+                    .attr("class", "value-label")
+                    .attr("text-anchor", "middle")
+                    .text(cityData[decade]?.toFixed(1) || "");
+
+                  labelPositions.set(
+                    labelY,
+                    (labelPositions.get(labelY) || 0) + 1
+                  );
+                }
+              });
+
+              const cityLabelY =
+                escala_y(cityData["1970's"]) + (index % 2 === 0 ? -1 : 1) * 15;
+              svg
+                .append("text")
+                .attr("class", "city-label")
+                .attr("x", escala_x("1970's") - 10)
+                .attr("y", cityLabelY)
+                .attr("dy", "0.35em")
+                .text(cityData.Cidade)
+                .attr("fill", colorScale(cityData.Cidade))
+                .attr("text-anchor", "end");
+            });
+          }
+
+          const citySearch = document.getElementById("city-search");
+          const datalist = document.getElementById("cities");
+          const checkboxContainer = d3.select("#checkbox-container");
+
+          base_city.forEach((d) => {
+            const option = document.createElement("option");
+            option.value = d.Cidade;
+            datalist.appendChild(option);
+          });
+
+          citySearch.addEventListener("change", () => {
+            const selectedCity = citySearch.value;
+            if (!selectedCity) return;
+
+            const isAlreadySelected = Array.from(
+              checkboxContainer.selectAll("input").nodes()
+            ).some((input) => input.value === selectedCity);
+
+            if (!isAlreadySelected) {
+              const checkbox = checkboxContainer.append("div");
+              checkbox
+                .append("input")
+                .attr("type", "checkbox")
+                .attr("value", selectedCity)
+                .attr("checked", true)
+                .on("change", updateChart);
+
+              checkbox.append("label").text(selectedCity);
+              updateChart();
+            }
+            citySearch.value = "";
+          });
+
+          document
+            .getElementById("clear-button")
+            .addEventListener("click", () => {
+              checkboxContainer.selectAll("div").remove();
+              drawChart([]);
+            });
+
+          function updateChart() {
+            const selectedCities = Array.from(
+              checkboxContainer.selectAll("input:checked").nodes()
+            ).map((checkbox) => checkbox.value);
+
+            const filteredData = base_city.filter((d) =>
+              selectedCities.includes(d.Cidade)
+            );
+
+            drawChart(filteredData);
+          }
+
+          drawChart([]);
+        </script>
+      </div>
+    </div>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="City_panel.css" />
+    <title>City Panel</title>
+  </head>
+  <body>
+    <div id="intro-container">
+      <div id="content">
+        <h1>Bem-vindo ao Painel de Clima</h1>
+        <p>
+          Explore como as mudanças climáticas estão impactando as temperaturas
+          de bulbo úmido nas cidades da América Latina. Descubra padrões e
+          tendências ao longo do tempo!
+        </p>
+        <div id="buttons-container">
+          <button
+            id="explore-graph-btn"
+            onclick="location.href='#exploratory_path'"
+          >
+            Explorar Gráfico
+          </button>
+          <button id="explore-content-btn" onclick="location.href='#main_head'">
+            Aprender Mais
+          </button>
+        </div>
+      </div>
+      <div id="image-overlay"></div>
+    </div>
+
+    <div id="ground">
+      <div id="main_head">
+        <h1>A evolução da Temperatura de Bulbo Úmido na América Latina</h1>
+        <p>
+          Um painel interativo para explorar como as temperaturas de bulbo úmido
+          evoluíram em diversas cidades. Entenda os impactos do calor extremo no
+          corpo humano e nas cidades mais vulneráveis.
+        </p>
+      </div>
+
+      <div id="narrative_path">
+        <section>
+          <h2>O que é Temperatura de Bulbo Úmido?</h2>
+          <p>
+            Um índice que combina temperatura e umidade para medir o impacto do
+            calor extremo no corpo humano. Quando ultrapassa 35°C, o corpo perde
+            a capacidade de se resfriar, tornando-se fatal.
+          </p>
+        </section>
+
+        <section>
+          <h2>Por que é importante?</h2>
+          <p>
+            Este índice é essencial para identificar zonas de risco climático,
+            especialmente em áreas urbanas e costeiras, ajudando a mitigar os
+            impactos do calor extremo.
+          </p>
+        </section>
+
+        <section>
+          <h2>Principais Descobertas</h2>
+          <ul>
+            <li>
+              Incremento significativo na temperatura nas últimas décadas.
+            </li>
+            <li>
+              Maior vulnerabilidade em cidades costeiras e regiões urbanas.
+            </li>
+            <li>
+              Zonas de risco identificadas para ação imediata e planejamento
+              climático.
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Por que é importante?</h2>
+          <p>
+            Este índice é essencial para identificar zonas de risco climático,
+            especialmente em áreas urbanas e costeiras, ajudando a mitigar os
+            impactos do calor extremo.
+          </p>
+        </section>
+      </div>
+      <div id="scrolling_part">
+        <div class="scroll-img" id="img1">
+          <img
+            src="https://raw.githubusercontent.com/valmerson/Latent-Bulb/refs/heads/main/images/oficial%20images/Picture1.svg"
+            alt="Imagem 1"
+          />
+        </div>
+        <div class="scroll-img" id="img2">
+          <img
+            src="https://raw.githubusercontent.com/valmerson/Latent-Bulb/refs/heads/main/images/oficial%20images/Picture2.svg"
+            alt="Imagem 2"
+          />
+        </div>
+        <div class="scroll-img" id="img3">
+          <img
+            src="https://raw.githubusercontent.com/valmerson/Latent-Bulb/refs/heads/main/images/oficial%20images/Picture3.svg"
+            alt="Imagem 3"
+          />
+        </div>
+        <div class="scroll-img" id="img4">
+          <img
+            src="https://raw.githubusercontent.com/valmerson/Latent-Bulb/refs/heads/main/images/oficial%20images/Picture4.svg"
+            alt="Imagem 3"
+          />
+        </div>
+        <div class="scroll-img" id="img5">
+          <img
+            src="https://raw.githubusercontent.com/valmerson/Latent-Bulb/refs/heads/main/images/oficial%20images/Picture5.svg"
+            alt="Imagem 3"
+          />
+        </div>
+        >
+      </div>
+
+      <div id="chart1">
+        <section>
+          <h1 style="color: whitesmoke">A evolução na América Latina</h1>
+          <iframe
+            src="chart1.html"
+            style="width: 100%; height: 1000px"
+          ></iframe>
+        </section>
+      </div>
+
+      <div id="chart2">
+        <section>
+          <h1 style="color: whitesmoke">
+            A média da temperatura máxima do Bulbo Úmido na América Latina
+          </h1>
+          <iframe
+            src="chart2.html"
+            style="width: 100%; height: 1000px"
+          ></iframe>
+        </section>
+      </div>
+
+      <div id="exploratory_path">
+        <div id="selector">
+          <label for="city-search"
+            >Choose Cities:
+            <p></p>
+          </label>
+          <input
+            type="text"
+            id="city-search"
+            list="cities"
+            placeholder="Type to search..."
+            autocomplete="on"
+          />
+          <datalist id="cities"></datalist>
+          <hr />
+          <div id="checkbox-container"></div>
+          <button id="clear-button">Clear Filter</button>
+        </div>
+
+        <div id="container-chart">
+          <svg
+            id="slopechart"
+            viewBox="0 0 1000 500"
+            preserveAspectRatio="xMidYMid meet"
+          ></svg>
+          <script src="https://d3js.org/d3.v7.min.js"></script>
+          <script src="dados_city_panel.js"></script>
+        </div>
+        <script>
+          window.addEventListener("scroll", () => {
+            const scrollPosition =
+              window.pageYOffset || document.documentElement.scrollTop;
+            const height = window.innerHeight;
+
+            // Remova a classe 'active' de todas as imagens
+            document.querySelectorAll(".scroll-img").forEach((div) => {
+              div.classList.remove("active");
+            });
+
+            // Calcule qual imagem deve ser ativa com base na posição de rolagem
+            const activeIndex = Math.floor(scrollPosition / height);
+            const activeImg = document.querySelector(`#img${activeIndex + 1}`);
+            if (activeImg) {
+              activeImg.classList.add("active");
+            }
+          });
+        </script>
+        <script>
+          const width = 1000;
+          const height = 500;
+          const margin = { top: 20, right: 50, bottom: 70, left: 150 };
+          const colorScale = d3.scaleOrdinal(d3.schemeTableau10);
+
+          const escala_x = d3
+            .scalePoint()
+            .domain(["1970's", "1980's", "1990's", "2000's", "2010's"])
+            .range([margin.left, width - margin.right]);
+
+          let escala_y;
+          const svg = d3.select("#slopechart");
+
+          function drawChart(data) {
+            svg.selectAll("*").remove();
+            const allValues = data.flatMap((d) => [
+              d["1970's"],
+              d["1980's"],
+              d["1990's"],
+              d["2000's"],
+              d["2010's"],
+            ]);
+            const yExtent = d3.extent(allValues);
+            escala_y = d3
+              .scaleLinear()
+              .domain([yExtent[0], yExtent[1]])
+              .range([height - margin.bottom, margin.top])
+              .nice();
+
+            const yAxis = d3
+              .axisRight(escala_y)
+              .ticks(10)
+              .tickFormat(d3.format(".1f"));
+            svg
+              .append("g")
+              .attr("class", "y-axis")
+              .attr("transform", `translate(${width - margin.right}, 0)`)
+              .call(yAxis);
+
+            escala_x.domain().forEach((decade) => {
+              svg
+                .append("line")
+                .attr("x1", escala_x(decade))
+                .attr("y1", escala_y.range()[0])
+                .attr("x2", escala_x(decade))
+                .attr("y2", escala_y.range()[1])
+                .attr("stroke", "gray")
+                .attr("stroke-width", 1)
+                .attr("stroke-opacity", 0.3);
+
+              svg
+                .append("text")
+                .attr("class", "axis-label")
+                .attr("x", escala_x(decade))
+                .attr("y", height - margin.bottom + 30)
+                .attr("text-anchor", "middle")
+                .text(decade);
+            });
+
+            data.forEach((cityData, index) => {
+              const line = svg
+                .append("path")
+                .datum(
+                  escala_x
+                    .domain()
+                    .map((decade) => [
+                      escala_x(decade),
+                      escala_y(cityData[decade]),
+                    ])
+                )
+                .attr("fill", "none")
+                .attr("stroke", colorScale(cityData.Cidade))
+                .attr("stroke-width", 2)
+                .attr(
+                  "d",
+                  d3
+                    .line()
+                    .x((d) => d[0])
+                    .y((d) => d[1])
+                );
+
+              const labelPositions = new Map();
+              const labelOffsetStep = 12;
+
+              escala_x.domain().forEach((decade, i) => {
+                svg
+                  .append("circle")
+                  .attr("cx", escala_x(decade))
+                  .attr("cy", escala_y(cityData[decade]))
+                  .attr("r", 2.5) // Reduzindo o tamanho da bolinha para metade
+                  .attr("fill", colorScale(cityData.Cidade));
+
+                if (i < escala_x.domain().length - 1) {
+                  const labelY = escala_y(cityData[decade]);
+                  const adjustedY = labelPositions.has(labelY)
+                    ? labelY + labelPositions.get(labelY) * labelOffsetStep
+                    : labelY;
+
+                  svg
+                    .append("text")
+                    .attr("x", escala_x(decade))
+                    .attr("y", adjustedY - 10)
+                    .attr("class", "value-label")
+                    .attr("text-anchor", "middle")
+                    .text(cityData[decade]?.toFixed(1) || "");
+
+                  labelPositions.set(
+                    labelY,
+                    (labelPositions.get(labelY) || 0) + 1
+                  );
+                }
+              });
+
+              const cityLabelY =
+                escala_y(cityData["1970's"]) + (index % 2 === 0 ? -1 : 1) * 15;
+              svg
+                .append("text")
+                .attr("class", "city-label")
+                .attr("x", escala_x("1970's") - 10)
+                .attr("y", cityLabelY)
+                .attr("dy", "0.35em")
+                .text(cityData.Cidade)
+                .attr("fill", colorScale(cityData.Cidade))
+                .attr("text-anchor", "end");
+            });
+          }
+
+          const citySearch = document.getElementById("city-search");
+          const datalist = document.getElementById("cities");
+          const checkboxContainer = d3.select("#checkbox-container");
+
+          base_city.forEach((d) => {
+            const option = document.createElement("option");
+            option.value = d.Cidade;
+            datalist.appendChild(option);
+          });
+
+          citySearch.addEventListener("change", () => {
+            const selectedCity = citySearch.value;
+            if (!selectedCity) return;
+
+            const isAlreadySelected = Array.from(
+              checkboxContainer.selectAll("input").nodes()
+            ).some((input) => input.value === selectedCity);
+
+            if (!isAlreadySelected) {
+              const checkbox = checkboxContainer.append("div");
+              checkbox
+                .append("input")
+                .attr("type", "checkbox")
+                .attr("value", selectedCity)
+                .attr("checked", true)
+                .on("change", updateChart);
+
+              checkbox.append("label").text(selectedCity);
+              updateChart();
+            }
+            citySearch.value = "";
+          });
+
+          document
+            .getElementById("clear-button")
+            .addEventListener("click", () => {
+              checkboxContainer.selectAll("div").remove();
+              drawChart([]);
+            });
+
+          function updateChart() {
+            const selectedCities = Array.from(
+              checkboxContainer.selectAll("input:checked").nodes()
+            ).map((checkbox) => checkbox.value);
+
+            const filteredData = base_city.filter((d) =>
+              selectedCities.includes(d.Cidade)
+            );
+
+            drawChart(filteredData);
+          }
+
+          drawChart([]);
+        </script>
+      </div>
+    </div>
+  </body>
+</html>

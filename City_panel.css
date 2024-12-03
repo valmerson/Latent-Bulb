@@ -11,13 +11,13 @@ body {
 #intro-container {
   height: 100vh;
   display: flex;
-  align-items: center; /* Centraliza o conteúdo verticalmente */
-  justify-content: center; /* Centraliza o conteúdo horizontalmente */
-  position: relative; /* Necessário para gradiente e imagem de fundo */
-  /* background: url("https://raw.githubusercontent.com/valmerson/Latent-Bulb/main/images/nuvem1.jpg"); */
-  background: url("https://raw.githubusercontent.com/valmerson/Latent-Bulb/refs/heads/main/images/oficial%20images/cover_adj.svg");
-  background-size: cover; /* Ajusta a imagem para cobrir o espaço disponível */
-  background-position: center; /* Centraliza a imagem */
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: url("https://raw.githubusercontent.com/valmerson/Latent-Bulb/refs/heads/main/images/oficial%20images/coverage%205.png");
+  /* background: url("https://raw.githubusercontent.com/valmerson/Latent-Bulb/refs/heads/main/images/oficial%20images/cover_adj.svg"); */
+  background-size: cover;
+  background-position: center;
 }
 
 #content {
@@ -93,27 +93,109 @@ body {
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
-
+/* 
 #scrolling_part {
   position: relative;
-  width: 100vw; /* Ajusta a largura para a largura da janela */
-  height: 100vh; /* Ajusta a altura para a altura da janela */
-  overflow: hidden;
+  width: 100%;
+  height: 100%; 
+  overflow-y: auto;
 }
 
 .scroll-img {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0; /* Inicia com todas imagens invisíveis */
+  height: 100vh; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.3; 
+  transition: opacity 1s ease-out; 
+}
+.is-active {
+  opacity: 1; 
+} */
+
+.scrollama-container .step img {
   transition: opacity 0.5s ease-in-out;
+  opacity: 0;
 }
 
-.scroll-img.active {
+.scrollama-container .step.is-active img {
   opacity: 1;
 }
+
+.graphic-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.step {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-image {
+  max-width: 100%;
+  max-height: 100vh;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0;
+}
+
+.is-active .step-image {
+  opacity: 1;
+}
+
+.graphic-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.step {
+  /* position: sticky;
+  top: 0; 
+  width: 100%;
+  height: 100vh; 
+  display: flex;
+  align-items: center;
+  justify-content: center; */
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0 ease-in-out;
+}
+
+.step-image {
+  /* max-width: 100%;
+  max-height: 100vh;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0;  */
+
+  max-width: 100%;
+  height: auto;
+  transition: opacity 0 ease-in-out;
+}
+
+.is-active .step-image {
+  opacity: 1;
+}
+
+/* .scrollama-container .step-text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 2em;
+  z-index: 10;
+} */
 
 #chart1 {
   max-width: 90%;
@@ -123,7 +205,6 @@ body {
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
-
 #chart2 {
   max-width: 90%;
   max-height: 100%;
@@ -132,7 +213,6 @@ body {
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
-
 #selector input[type="text"] {
   width: 100%;
   padding: 10px;
@@ -165,102 +245,96 @@ svg {
 /* Exploratory Path - Contêiner Pai */
 #exploratory_path {
   display: flex; /* Configura layout lado a lado */
-  align-items: center; /* Alinha os elementos verticalmente */
-  justify-content: space-between; /* Distribui o espaço horizontalmente */
-  height: 100vh; /* Ocupa 100% da altura da tela */
-  gap: 1%; /* Espaçamento entre `#selector` e `#container-chart` */
-  padding: 10px; /* Espaçamento interno */
-  overflow: hidden; /* Remove barras de rolagem */
-  box-sizing: border-box; /* Inclui padding no cálculo do tamanho */
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  gap: 1%;
+  padding: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
-/* Selector - Painel de Seleção */
 #selector {
-  flex: 0 0 25%; /* O seletor ocupa 20% da largura disponível */
-  height: 90%; /* Ocupa toda a altura do contêiner pai */
+  flex: 0 0 25%;
+  height: 90%;
   background: #5c5c5b;
-  /* background: linear-gradient(rgba(26, 32, 44, 0.9), rgba(26, 32, 44, 0.9)); */
-  background-size: cover; /* Ajusta a imagem para cobrir todo o espaço */
-  background-position: center; /* Centraliza a imagem */
-  border-radius: 50px; /* Bordas arredondadas */
-  padding: 20px; /* Espaço interno */
-  color: white; /* Texto em branco para contraste */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra leve */
-  overflow-y: auto; /* Permite rolagem apenas se o conteúdo exceder a altura */
+  background-size: cover;
+  background-position: center;
+  border-radius: 50px;
+  padding: 20px;
+  color: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
 }
 
 #selector input[type="text"] {
-  width: 90%; /* A barra de busca ocupa 90% da largura do elemento pai */
-  margin: 0 auto; /* Centraliza a barrinha dentro do seletor */
-  display: block; /* Garante que seja tratada como um bloco para centralização */
-  padding: 10px; /* Adiciona espaço interno para melhor usabilidade */
-  font-size: 1rem; /* Aumenta o tamanho da fonte para boa legibilidade */
-  /* background-color: #919aab; Cor de fundo escura */
-  background-color: #2d3748; /* Cor de fundo escura */
-  color: #ffffff; /* Texto branco para contraste */
-  border: none; /* Remove bordas padrões */
-  border-radius: 8px; /* Bordas arredondadas */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
+  width: 90%;
+  margin: 0 auto;
+  display: block;
+  padding: 10px;
+  font-size: 1rem;
+  background-color: #2d3748;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 #container-chart {
-  height: 90%; /* Ocupa 100% da altura da tela */
-  display: flex; /* Alinha os elementos internamente */
-  align-items: center; /* Centraliza verticalmente */
-  justify-content: center; /* Centraliza horizontalmente */
-  /* position: relative;  */
-  background: linear-gradient(
-      blue /* rgba(255, 255, 255, 0.9),
-      rgba(255, 255, 255, 0.9) */
-    ),
-    url("https://source.unsplash.com/1600x900/?data,chart"); /* Imagem de fundo temática */
-  background-size: cover; /* Garante que a imagem cubra todo o espaço */
-  background-position: center; /* Centraliza a posição da imagem */
-  overflow: hidden; /* Remove qualquer barra de rolagem */
+  height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(blue),
+    url("https://source.unsplash.com/1600x900/?data,chart");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
   overflow: visible;
-  border-radius: 50px; /* Bordas arredondadas */
-  padding: 20px; /* Espaço interno para o gráfico */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para destaque */
+  border-radius: 50px;
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   justify-content: center;
   align-items: center;
 }
 
 /* SVG Styling - Gráfico Responsivo */
 svg {
-  width: 100%; /* Ocupa 100% da largura disponível */
-  height: 100%; /* Ajusta-se para preencher a altura do container */
-  outline: none; /* Remove bordas padrão */
+  width: 100%;
+  height: 100%;
+  outline: none;
   overflow: visible;
-  display: block; /* Remove espaços extras e alinha corretamente */
-  margin: 0 auto; /* Garante que o SVG fique centralizado horizontalmente */
+  display: block;
+  margin: 0 auto;
 }
 
 .city-label {
-  font-size: 12px; /* Tamanho do texto */
-  font-weight: bold; /* Negrito para destaque */
-  text-anchor: end; /* Alinha o texto à direita */
-  fill: whitesmoke; /* Cor do texto */
-  transform: translate(
-    -10px,
-    -10px
-  ); /* Move 10px para a esquerda e 10px para cima */
+  font-size: 12px;
+  font-weight: bold;
+  text-anchor: end;
+  fill: whitesmoke;
+  transform: translate(-10px, -10px);
 }
 
 @media (max-width: 768px) {
   #exploratory_path {
-    flex-direction: column; /* Alinha os elementos verticalmente */
-    height: auto; /* Permite altura dinâmica */
-    gap: 20px; /* Espaçamento maior entre os elementos */
+    flex-direction: column;
+    height: auto;
+    gap: 20px;
   }
 
   #selector,
   #container-chart {
     flex: none;
-    width: 100%; /* Ambos ocupam toda a largura */
-    height: 50vh; /* Dividem igualmente a altura disponível */
+    width: 100%;
+    height: 50vh;
   }
 
   #container-chart svg {
-    height: auto; /* Ajusta dinamicamente o tamanho do gráfico */
+    height: auto;
   }
+}
+
+iframe {
+  pointer-events: auto;
 }
